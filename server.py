@@ -7,7 +7,7 @@ from forms.loginform import LoginForm
 from forms.user import RegisterForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'randomny_kluch'
+app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -16,7 +16,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
+    return db_sess.get(User, user_id)
 
 
 @app.route('/')

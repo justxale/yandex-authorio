@@ -7,7 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Post(SqlAlchemyBase):
-    __tablename__ = 'news'
+    __tablename__ = 'posts'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
