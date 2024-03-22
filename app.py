@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 
-from data.users import User
+from data.models.users import User
 from data import db_session
 from forms.loginform import LoginForm
 from forms.user import RegisterForm
@@ -22,7 +22,7 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/index')
 def index():
-    db_sess = db_session.create_session()
+    # db_sess = db_session.create_session()
     if current_user.is_authenticated:
         return render_template("base.html")
     return render_template("welcome_page.html")
@@ -76,5 +76,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    db_session.global_init("db/users.db")
+    db_session.global_init("db/users.sqlite")
     app.run(port=8080, host='127.0.0.1')
