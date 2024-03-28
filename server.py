@@ -75,9 +75,15 @@ def logout():
     return redirect("/")
 
 
-@app.route("/profile_page")
-def profile_page():
-    return render_template("profile_page.html")
+@app.route('/<string:username>', methods=['GET', 'POST'])
+def author_page(username: str):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.name == username).first()
+
+    return render_template(
+        'profile_page.html', title=f'Страница {user.name}',
+        user=user, has_admin_permissions=(user == current_user)
+    )
 
 
 if __name__ == '__main__':
