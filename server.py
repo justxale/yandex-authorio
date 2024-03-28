@@ -76,6 +76,7 @@ def logout():
 
 
 @app.route("/profile_page")
+@login_required
 def profile_page():
     return render_template("profile_page.html")
 
