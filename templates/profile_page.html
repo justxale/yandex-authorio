@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link href="static/css/base_style.css" rel="stylesheet">
+</head>
+<body>
+<p><img src="static/img/profile_img.png" width="100" height="100"></p>
+<h1>Имя: {{ current_user.name }}</h1>
+<h1>Email: {{current_user.email}}</h1>
+<h1>О себе: {{current_user.about}}</h1>
+</body>
+</html>
