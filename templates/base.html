@@ -14,10 +14,10 @@
 <header>
     {% if current_user.is_authenticated %}
     <a class="navbar-brand" href="/logout">Выйти из аккаунта {{ current_user.name }}</a>
-    <a class="profile_button" href="/profile_page">Профиль</a>
+    <a class="settings_btn" href="/settings_page">Профиль</a>
     {% else %}
     <p>
-        <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+        <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
         <a class="btn btn-success" href="/login">Войти</a>
     </p>
     {% endif %}

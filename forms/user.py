@@ -10,3 +10,9 @@ class RegisterForm(FlaskForm):
     name = StringField('Имя пользователя', validators=[DataRequired()])
     about = TextAreaField("Немного о себе")
     submit = SubmitField('Войти')
+
+
+class SettingsChanger(FlaskForm):
+    name = StringField('Имя пользователя', validators=[DataRequired()])
+    about = TextAreaField('О себе')
+    submit = SubmitField('Подтвердить')

@@ -1,4 +1,4 @@
-.profile_button {
+.settings_btn {
 
 position: relative;
 top: 10px;
@@ -16,7 +16,7 @@ cursor: pointer;
 
 }
 
-.profile_button:hover {
+.settings_btn:hover {
 
 background-color: #FFFFFF;
 font-color: #004DFF;
