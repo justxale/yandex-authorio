@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 
-from data.models.users import User
-from data import db_session
+from data.models.users import User, Role
+from data import db_session, consts
 from forms.loginform import LoginForm
 from forms.user import RegisterForm, SettingsChanger
 
@@ -97,4 +97,21 @@ def change_settings():
 
 if __name__ == '__main__':
     db_session.global_init("db/users.sqlite")
+
+    session = db_session.create_session()
+
+    for role_name in consts.ALL_ROLES:
+        try:
+            role = Role(
+                name=role_name
+            )
+        except:
+            pass
+
+    try:
+        user = User(name=consts.AUTO_USER['name'])
+        user.set_password(consts.AUTO_USER['password'])
+    except:
+        pass
+
     app.run(port=8080, host='127.0.0.1', debug=True)

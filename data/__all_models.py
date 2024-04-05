@@ -1,2 +1,2 @@
-from .models.users import User, Author
+from .models.users import User, Author, Role
 from .models.features import Post, Comment
