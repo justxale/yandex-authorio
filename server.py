@@ -4,7 +4,7 @@ from flask_login import LoginManager, logout_user, login_required, current_user,
 from data.models.users import User
 from data import db_session
 from forms.loginform import LoginForm
-from forms.user import RegisterForm
+from forms.user import RegisterForm, SettingsChanger
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
@@ -75,10 +75,24 @@ def logout():
     return redirect("/")
 
 
-@app.route("/profile_page")
+@app.route("/settings_page")
 @login_required
 def profile_page():
-    return render_template("profile_page.html")
+    return render_template("settings_page.html")
+
+
+@app.route('/change_settings', methods=['GET', 'POST'])
+@login_required
+def change_settings():
+    form = SettingsChanger()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == current_user.email).first()
+        user.name = form.name.data
+        user.about = form.about.data
+        db_sess.commit()
+        return redirect('/settings_page')
+    return render_template('change_settings.html', form=form)
 
 
 if __name__ == '__main__':
