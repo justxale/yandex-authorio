@@ -7,15 +7,23 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link href="static/css/base_style.css" rel="stylesheet">
+    <!--- link href="static/css/base_style.css" rel="stylesheet" --->
+    <link href="static/css/header.css" rel="stylesheet">
+    <link href="static/css/profile.css" rel="stylesheet">
     <title>{{title}}</title>
 </head>
 <body>
 <header>
     {% if current_user.is_authenticated %}
-    <a class="navbar-brand" href="/logout">Выйти из аккаунта {{ current_user.name }}</a>
-    <a class="settings_btn" href="/settings_page">Профиль</a>
-    <a class="profile_button" href="/{{ current_user.name }}">Профиль</a>
+        <!---a class="navbar-brand" href="/logout">Выйти из аккаунта {{ current_user.name }}</a--->
+        <div>
+            <a class="btn btn-primary" href="/">Главная</a>
+        </div>
+        <div>
+            <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
+            <a class="btn btn-primary" href="/login">Выйти</a>
+            <a class="btn btn-primary" href="/settings_page">Настройки</a>
+        </div>
     {% else %}
     <p>
         <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
@@ -23,8 +31,6 @@
     </p>
     {% endif %}
 </header>
-
-<!-- Begin page content -->
 <main role="main" class="container">
     {% block content %}{% endblock %}
 </main>

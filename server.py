@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 
-from data.models.users import User, Role
+from data.models.features import Post
+from data.models.users import User, Role, Author
 from data import db_session, consts
 from forms.loginform import LoginForm
+from forms.posts import AddPostForm
 from forms.user import RegisterForm, SettingsChanger
 
 app = Flask(__name__)
@@ -11,6 +13,14 @@ app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+class FreshPost:
+    def __init__(self, title, content, author_name, created_date):
+        self.title = title
+        self.content = content
+        self.author = author_name
+        self.created_date = created_date
 
 
 @login_manager.user_loader
@@ -22,10 +32,15 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/index')
 def index():
-    # db_sess = db_session.create_session()
+    db_sess = db_session.create_session()
+    posts = db_sess.query(Post).all()
+    new_posts = []
+    for post in posts:
+        new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
+
     if current_user.is_authenticated:
-        return render_template("base.html")
-    return render_template("welcome_page.html")
+        return render_template("posts_view.html", posts=new_posts)
+    return render_template("welcome_page.html", posts=new_posts)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -93,15 +108,36 @@ def change_settings():
         return redirect('/settings_page')
     return render_template('change_settings.html', form=form)
 
+
 @app.route('/<string:username>', methods=['GET', 'POST'])
 def author_page(username: str):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == username).first()
 
+    posts = db_sess.query(Post).filter(Post.author_id == user.id)
+
     return render_template(
         'profile_page.html', title=f'Страница {user.name}',
-        user=user, has_admin_permissions=(user == current_user)
+        user=user, has_admin_permissions=(user == current_user),
+        posts=posts
     )
+
+
+@app.route('/addpost', methods=['GET', 'POST'])
+def add_post():
+    form = AddPostForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        post = Post(
+            title=form.title.data, content=form.about.data, author_id=current_user.id
+        )
+        db_sess.add(post)
+        db_sess.commit()
+        return redirect(f"/{current_user.name}")
+    return render_template(
+        'add_post.html', title='Создание поста', form=form
+    )
+
 
 if __name__ == '__main__':
     db_session.global_init("db/users.sqlite")
@@ -109,16 +145,18 @@ if __name__ == '__main__':
     session = db_session.create_session()
 
     for role_name in consts.ALL_ROLES:
-        try:
-            role = Role(
-                name=role_name
-            )
-        except:
-            pass
+        role = Role(
+            name=role_name
+        )
+        session.add(role)
+    user = User(name=consts.AUTO_USER['name'])
+    user.set_password(consts.AUTO_USER['password'])
+    session.add(user)
+    author = Author(display_name=user.name, user_id=user.id, about='Boo!')
+    session.add(author)
 
     try:
-        user = User(name=consts.AUTO_USER['name'])
-        user.set_password(consts.AUTO_USER['password'])
+        session.commit()
     except:
         pass
 

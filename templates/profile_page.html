@@ -1,16 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
-        <p><img src="static/img/profile_img.png" width="100" height="100"></p>
-        <h1>{{ user.name }}</h1>
-        <h1>О себе:</h1><br/>
-        <p>{{ user.about }}</p>
-    </div>
-    {% if has_admin_permissions %}
+    <div class="profile">
         <div>
-        <a class="btn btn-primary" href="/{{ create_post }}">Добавить пост</a>
+            <p><img src="static/img/profile_img.png" width="100" height="100"></p>
+            <h1>{{ user.name }}</h1>
+            <h1>О себе:</h1><br/>
+            <p>{{ user.about }}</p>
         </div>
-    {% endif %}
+        <div class="postContainer">
+            <h1>Посты</h1>
+            {% if has_admin_permissions %}
+            <div>
+            <a class="btn btn-primary" href="/addpost">Добавить пост</a>
+            </div>
+            {% endif %}
+            {% for post in posts %}
+            <div>
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.content }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div>
+
+        </div>
+    </div>
+
+
     <div></div>
 {% endblock %}
