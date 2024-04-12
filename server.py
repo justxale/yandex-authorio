@@ -118,13 +118,17 @@ def change_settings():
 def author_page(username: str):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == username).first()
-    print('boo', user)
+
+    if not user or not user.is_author:
+        return render_template(
+            'errors/404.html', url=f'/{username}'
+        )
 
     posts = db_sess.query(Post).filter(Post.author_id == user.author_id)
     levels = db_sess.query(SubLevel).filter(SubLevel.author_id == user.author_id)
     return render_template(
         'profile_page.html', title=f'Страница {user.name}',
-        user=user, has_admin_permissions=(user == current_user),
+        user=user.author, has_admin_permissions=(user == current_user),
         posts=posts, levels=levels
     )
 
