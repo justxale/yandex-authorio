@@ -35,7 +35,7 @@ def index():
     db_sess = db_session.create_session()
     posts = db_sess.query(Post).all()
     new_posts = []
-    print(current_user.is_author())
+    # print(current_user.is_author())
     for post in posts:
         try:
             new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
@@ -91,7 +91,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    print('Boo!')
     return redirect("/")
 
 
@@ -157,7 +156,12 @@ def become_creator():
             display_name=form.display_name.data, about=form.about.data
         )
         db_sess.add(author)
-        db_sess.query(User).filter(User.id == current_user.id).update({"author": author})
+        db_sess.commit()
+        print(author.id)
+        db_sess = db_session.create_session()
+
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        user.author_id = author.id
         db_sess.commit()
 
         return redirect(f"/{current_user.name}")

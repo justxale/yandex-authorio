@@ -27,6 +27,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
+    @property
     def is_author(self):
         if self.author_id:
             return True
