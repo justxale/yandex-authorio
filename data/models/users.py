@@ -16,8 +16,9 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     role_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("roles.id"))
+    author_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("authors.id"))
 
-    author = orm.relationship("Author", back_populates='user')
+    author = orm.relationship("Author")
     role = orm.relationship('Role')
 
     def set_password(self, password):
@@ -34,10 +35,9 @@ class Author(SqlAlchemyBase):
     display_name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
-    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
 
-    user = orm.relationship('User')
+    user = orm.relationship('User', back_populates='author')
     posts = orm.relationship("Post", back_populates='author')
 
 

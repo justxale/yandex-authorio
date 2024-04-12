@@ -38,9 +38,10 @@ def index():
     for post in posts:
         new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
 
-    if current_user.is_authenticated:
-        return render_template("posts_view.html", posts=new_posts)
-    return render_template("welcome_page.html", posts=new_posts)
+    #if current_user.is_authenticated:
+    #    return render_template("posts_view.html", posts=new_posts)
+    # return render_template("welcome_page.html", posts=new_posts)
+    return render_template("posts_view.html", posts=new_posts)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -86,6 +87,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    print('Boo!')
     return redirect("/")
 
 
@@ -109,12 +111,13 @@ def change_settings():
     return render_template('change_settings.html', form=form)
 
 
-@app.route('/<string:username>', methods=['GET', 'POST'])
+@app.route('/<string:username>')
 def author_page(username: str):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == username).first()
+    print('boo', user)
 
-    posts = db_sess.query(Post).filter(Post.author_id == user.id)
+    posts = db_sess.query(Post).filter(Post.author_id == user.author_id)
 
     return render_template(
         'profile_page.html', title=f'Страница {user.name}',
@@ -124,6 +127,7 @@ def author_page(username: str):
 
 
 @app.route('/addpost', methods=['GET', 'POST'])
+@login_required
 def add_post():
     form = AddPostForm()
     if form.validate_on_submit():
@@ -139,7 +143,7 @@ def add_post():
     )
 
 
-if __name__ == '__main__':
+def main():
     db_session.global_init("db/users.sqlite")
 
     session = db_session.create_session()
@@ -152,7 +156,7 @@ if __name__ == '__main__':
     user = User(name=consts.AUTO_USER['name'])
     user.set_password(consts.AUTO_USER['password'])
     session.add(user)
-    author = Author(display_name=user.name, user_id=user.id, about='Boo!')
+    author = Author(display_name=user.name, about='Boo!')
     session.add(author)
 
     try:
@@ -160,4 +164,7 @@ if __name__ == '__main__':
     except:
         pass
 
+
+if __name__ == '__main__':
+    main()
     app.run(port=8080, host='127.0.0.1', debug=True)

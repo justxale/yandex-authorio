@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    {% for post in posts %}
-        <div>
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.content }}</p>
-            <p> {{ post.author }} {{ post.created_date }}</p>
-        </div>
-    {% endfor %}
-</div>
+    <h2>Свежие посты</h2>
+    <div class="postContainer">
+        {% for post in posts %}
+            <div class="post">
+                <h2>{{ post.title }}</h2>
+                <h3>{{ post.content }}</h3>
+                <p> {{ post.author }} - {{ post.created_date }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

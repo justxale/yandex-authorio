@@ -5,4 +5,18 @@
 
 .postContainer {
     flex-grow: 2;
+    padding: 10px;
+}
+
+.profileBio {
+    flex-grow: 0.5;
+
+}
+
+.post {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 2px darkgrey solid;
+    border-radius: 10px;
 }

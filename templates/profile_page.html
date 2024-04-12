@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="profile">
-        <div>
+        <div class="profileBio">
             <p><img src="static/img/profile_img.png" width="100" height="100"></p>
             <h1>{{ user.name }}</h1>
             <h1>О себе:</h1><br/>
@@ -16,7 +16,7 @@
             </div>
             {% endif %}
             {% for post in posts %}
-            <div>
+            <div class="post">
                 <h2>{{ post.title }}</h2>
                 <p>{{ post.content }}</p>
             </div>
