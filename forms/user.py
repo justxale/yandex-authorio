@@ -11,7 +11,13 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
-class SettingsChanger(FlaskForm):
+class ChangeSettingsForm(FlaskForm):
     name = StringField('Имя пользователя', validators=[DataRequired()])
     about = TextAreaField('О себе')
     submit = SubmitField('Подтвердить')
+
+
+class BecomeAuthorForm(FlaskForm):
+    display_name = StringField('Имя пользователя', validators=[DataRequired()])
+    about = TextAreaField('О себе', validators=[DataRequired()])
+    submit = SubmitField('Стать автором!')

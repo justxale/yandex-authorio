@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 
-from data.models.features import Post
+from data.models.features import Post, SubLevel
 from data.models.users import User, Role, Author
 from data import db_session, consts
 from forms.loginform import LoginForm
 from forms.posts import AddPostForm
-from forms.user import RegisterForm, SettingsChanger
+from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
@@ -35,8 +35,12 @@ def index():
     db_sess = db_session.create_session()
     posts = db_sess.query(Post).all()
     new_posts = []
+    print(current_user.is_author())
     for post in posts:
-        new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
+        try:
+            new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
+        except AttributeError as e:
+            print(f'An error occured: {e}')
 
     #if current_user.is_authenticated:
     #    return render_template("posts_view.html", posts=new_posts)
@@ -100,7 +104,7 @@ def settings_page():
 @app.route('/change_settings', methods=['GET', 'POST'])
 @login_required
 def change_settings():
-    form = SettingsChanger()
+    form = ChangeSettingsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == current_user.email).first()
@@ -118,11 +122,11 @@ def author_page(username: str):
     print('boo', user)
 
     posts = db_sess.query(Post).filter(Post.author_id == user.author_id)
-
+    levels = db_sess.query(SubLevel).filter(SubLevel.author_id == user.author_id)
     return render_template(
         'profile_page.html', title=f'Страница {user.name}',
         user=user, has_admin_permissions=(user == current_user),
-        posts=posts
+        posts=posts, levels=levels
     )
 
 
@@ -139,7 +143,26 @@ def add_post():
         db_sess.commit()
         return redirect(f"/{current_user.name}")
     return render_template(
-        'add_post.html', title='Создание поста', form=form
+        'forms/add_post.html', title='Создание поста', form=form
+    )
+
+
+@app.route('/becomecreator', methods=['GET', 'POST'])
+@login_required
+def become_creator():
+    form = BecomeAuthorForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        author = Author(
+            display_name=form.display_name.data, about=form.about.data
+        )
+        db_sess.add(author)
+        db_sess.query(User).filter(User.id == current_user.id).update({"author": author})
+        db_sess.commit()
+
+        return redirect(f"/{current_user.name}")
+    return render_template(
+        'forms/become_creator.html', title='Регистрация нового автора', form=form
     )
 
 

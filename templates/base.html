@@ -19,9 +19,12 @@
     </div>
     {% if current_user.is_authenticated %}
         <!---a class="navbar-brand" href="/logout">Выйти из аккаунта {{ current_user.name }}</a--->
-
         <div>
-            <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
+            {% if current_user.is_author() %}
+                <a class="btn btn-primary" href="/becomecreator">Стать автором</a>
+            {% else %}
+                <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
+            {% endif %}
             <a class="btn btn-primary" href="/logout">Выйти</a>
             <a class="btn btn-primary" href="/settings_page">Настройки</a>
         </div>

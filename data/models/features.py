@@ -33,3 +33,15 @@ class Comment(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey('users.id'))
     user = orm.relationship('User')
 
+
+class SubLevel(SqlAlchemyBase):
+    __tablename__ = 'subscriptionLevels'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    title = sqlalchemy.Column(sqlalchemy.String)
+    description = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    cost = sqlalchemy.Column(sqlalchemy.Integer)
+
+    author_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                  sqlalchemy.ForeignKey("authors.id"))
+    author = orm.relationship('Author')

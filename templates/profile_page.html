@@ -22,8 +22,14 @@
             </div>
             {% endfor %}
         </div>
-        <div>
-
+        <div class="levelsContainer">
+            {% for level in levels %}
+            <div class="level">
+                <h2>{{ level.title }}</h2>
+                <p>{{ level.description }}</p>
+                <p>{{ level.cost }} RUB</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
