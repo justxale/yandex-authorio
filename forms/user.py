@@ -18,6 +18,6 @@ class ChangeSettingsForm(FlaskForm):
 
 
 class BecomeAuthorForm(FlaskForm):
-    display_name = StringField('Имя пользователя', validators=[DataRequired()])
+    display_name = StringField('Отображаемый ник', validators=[DataRequired()])
     about = TextAreaField('О себе', validators=[DataRequired()])
     submit = SubmitField('Стать автором!')

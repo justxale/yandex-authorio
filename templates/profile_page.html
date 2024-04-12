@@ -4,7 +4,7 @@
     <div class="profile">
         <div class="profileBio">
             <p><img src="static/img/profile_img.png" width="100" height="100"></p>
-            <h1>{{ user.name }}</h1>
+            <h1>{{ user.display_name }}</h1>
             <h1>О себе:</h1><br/>
             <p>{{ user.about }}</p>
         </div>
@@ -19,6 +19,7 @@
             <div class="post">
                 <h2>{{ post.title }}</h2>
                 <p>{{ post.content }}</p>
+                <p>Опубликовано {{ post.created_date.date() }}</p>
             </div>
             {% endfor %}
         </div>
