@@ -1,6 +1,8 @@
 .change_settings_btn {
 
 position: relative;
+position: relative;
+display: flex;
 display: inline-block;
 padding: 12px 24px;
 font-size: 16px;
@@ -17,6 +19,8 @@ cursor: pointer;
 .exit_btn {
 
 position: relative;
+display: flex;
+justify-content: space-between;
 top: 10px;
 left: 1300px;
 display: inline-block;
