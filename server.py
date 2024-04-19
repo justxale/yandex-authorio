@@ -1,6 +1,3 @@
-import os
-import sys
-
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -71,7 +68,8 @@ def register():
                                    message="Такой пользователь уже есть")
         user = User(
             name=form.name.data,
-            email=form.email.data
+            email=form.email.data,
+            photo_path='static/img/profile_img.png'
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -106,11 +104,17 @@ def logout():
 @login_required
 def settings_page():
     # необходимо подключить к базе данных, сделать проверку на наличие в ней
-    way_to_photo = None
     if request.method == 'POST' and 'photo' in request.files:
         filename = photos.save(request.files['photo'])
-        way_to_photo = f'static/img/{filename}'
-    return render_template("settings_page.html", custom_photo=way_to_photo)
+
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == current_user.email).first()
+        user.photo_path = f'static/img/{filename}'
+        db_sess.commit()
+
+        return redirect('/settings_page')
+
+    return render_template("settings_page.html")
 
 
 @app.route('/change_settings', methods=['GET', 'POST'])
@@ -208,7 +212,7 @@ def main():
 
     try:
         session.commit()
-    except:
+    except Exception:
         pass
 
 

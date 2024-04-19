@@ -3,7 +3,7 @@
 {% block content %}
     <div class="profile">
         <div class="profileBio">
-            <p><img src="static/img/profile_img.png" width="100" height="100"></p>
+            <p><img src="{{ current_user.photo_path }}" width="150" height="150"></p>
             <h1>{{ user.display_name }}</h1>
             <h1>О себе:</h1><br/>
             <p>{{ user.about }}</p>

@@ -7,15 +7,10 @@
 </head>
 <body>
 <a class="exit_btn" href="/">Вернуться на главную</a>
-{% if custom_photo %}
+
 <p>
-    <img src = "{{ custom_photo }}" width="100" height="100">
+    <img src = "{{ current_user.photo_path }}" width="150" height="150">
 </p>
-{% else %}
-<p>
-    <img src="static/img/profile_img.png" width="100" height="100">
-</p>
-{% endif %}
 
 <form method="POST" enctype="multipart/form-data">
         <input type="file" name="photo" accept="image/*">
