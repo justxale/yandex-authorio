@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
 
@@ -42,7 +44,7 @@ def index():
         except AttributeError as e:
             print(f'An error occured: {e}')
 
-    #if current_user.is_authenticated:
+    # if current_user.is_authenticated:
     #    return render_template("posts_view.html", posts=new_posts)
     # return render_template("welcome_page.html", posts=new_posts)
     return render_template("posts_view.html", posts=new_posts)
@@ -107,8 +109,11 @@ def change_settings():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == current_user.email).first()
+
         user.name = form.name.data
-        user.about = form.about.data
+        user.author.about = form.about.data
+        user.author.display_name = form.display_name.data
+
         db_sess.commit()
         return redirect('/settings_page')
     return render_template('change_settings.html', form=form)

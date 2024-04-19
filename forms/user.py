@@ -13,6 +13,7 @@ class RegisterForm(FlaskForm):
 
 class ChangeSettingsForm(FlaskForm):
     name = StringField('Имя пользователя', validators=[DataRequired()])
+    display_name = StringField('Отображаемый ник', validators=[DataRequired()])
     about = TextAreaField('О себе')
     submit = SubmitField('Подтвердить')
 

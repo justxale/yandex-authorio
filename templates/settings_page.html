@@ -13,7 +13,12 @@
 
 <h1>Имя: {{ current_user.name }}</h1>
 <h1>Email: {{current_user.email }}</h1>
-<h1>О себе: {{current_user.about }}</h1>
+
+{% if current_user.author %}
+<h1>Отображаемый ник: {{ current_user.author.display_name }}</h1>
+<h1>О себе: {{current_user.author.about }}</h1>
+{% endif %}
+
 <a class="change_settings_btn" href="/change_settings">Изменить</a>
 
 <main role="main" class="container">
