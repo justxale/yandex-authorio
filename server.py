@@ -1,7 +1,9 @@
+import os
 import sys
 
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, current_user, login_user
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 from data.models.features import Post, SubLevel
 from data.models.users import User, Role, Author
@@ -12,6 +14,10 @@ from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
+
+photos = UploadSet('photos', IMAGES)
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/img'
+configure_uploads(app, photos)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -96,10 +102,15 @@ def logout():
     return redirect("/")
 
 
-@app.route("/settings_page")
+@app.route("/settings_page", methods=['GET', 'POST'])
 @login_required
 def settings_page():
-    return render_template("settings_page.html")
+    # необходимо подключить к базе данных, сделать проверку на наличие в ней
+    way_to_photo = None
+    if request.method == 'POST' and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        way_to_photo = f'static/img/{filename}'
+    return render_template("settings_page.html", custom_photo=way_to_photo)
 
 
 @app.route('/change_settings', methods=['GET', 'POST'])
