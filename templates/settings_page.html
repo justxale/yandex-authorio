@@ -20,7 +20,7 @@
 <h1>Имя: {{ current_user.name }}</h1>
 <h1>Email: {{current_user.email }}</h1>
 
-{% if current_user.author %}
+{% if current_user.is_author %}
 <h1>Отображаемый ник: {{ current_user.author.display_name }}</h1>
 <h1>О себе: {{current_user.author.about }}</h1>
 {% endif %}

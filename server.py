@@ -47,10 +47,10 @@ def index():
         except AttributeError as e:
             print(f'An error occured: {e}')
 
-    # if current_user.is_authenticated:
-    #    return render_template("posts_view.html", posts=new_posts)
-    # return render_template("welcome_page.html", posts=new_posts)
-    return render_template("posts_view.html", posts=new_posts)
+    if current_user.is_authenticated:
+        return render_template("posts_view.html", posts=new_posts)
+    return render_template("welcome_page.html", posts=new_posts)
+    # return render_template("posts_view.html", posts=new_posts)
 
 
 @app.route('/register', methods=['GET', 'POST'])
