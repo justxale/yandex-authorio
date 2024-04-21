@@ -1,10 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Добро пожаловать на сайт сервиса "Author.io!"
-</h1>
-<h4>
-    для получения доступа к возможностям сайта необходимо зарегестрироваться,
-    либо войти в уже существующий аккаунт
-</h4>
+    <div class="titleContainer">
+        <h1>Добро пожаловать на сайт сервиса "Author.io!"</h1>
+        <h4>
+            для получения доступа к возможностям сайта необходимо зарегестрироваться,
+            либо войти в уже существующий аккаунт
+        </h4>
+    </div>
+    <div class="buttonContainer">
+        <a class="btn btn-primary" href="/login">Войти</a>
+        <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
+    </div>
+    <div class="postContainer">
+        <h2>Свежие посты</h2>
+        {% for post in posts %}
+            <div class="post">
+                <h2>{{ post.title }}</h2>
+                <h3>{{ post.content }}</h3>
+                <p> {{ post.author }} - {{ post.created_date }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

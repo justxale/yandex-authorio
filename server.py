@@ -40,7 +40,6 @@ def index():
     db_sess = db_session.create_session()
     posts = db_sess.query(Post).all()
     new_posts = []
-    # print(current_user.is_author())
     for post in posts:
         try:
             new_posts.append(FreshPost(post.title, post.content, post.author.display_name, post.created_date.date()))
@@ -48,9 +47,10 @@ def index():
             print(f'An error occured: {e}')
 
     if current_user.is_authenticated:
-        return render_template("posts_view.html", posts=new_posts)
-    return render_template("welcome_page.html", posts=new_posts)
-    # return render_template("posts_view.html", posts=new_posts)
+        return render_template("posts_view.html", posts=new_posts, title='Главная страница')
+    
+    # И всё же мы хотим заинтересовать пользователей сайтом? Так почему бы не показывать им недавние посты?
+    return render_template("welcome_page.html", posts=new_posts, title='Главная страница')
 
 
 @app.route('/register', methods=['GET', 'POST'])
