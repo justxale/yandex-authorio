@@ -1,26 +1,8 @@
-.settings_btn {
-    position: relative;
-    top: 10px;
-    left: 1400px;
-    display: inline-block;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    background-color: #004DFF;
-    color: white;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-}
+a#exit{
 
-.settings_btn:hover {
-    background-color: #FFFFFF;
-    color: #004DFF;
-}
+background-color: #FF0000;
+color: white;
+border-radius: 4px;
+border: none;
 
-.navbar-brand {
-    position: fixed;
-    top: 10px;
-    left: 10px;
 }

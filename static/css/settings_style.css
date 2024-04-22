@@ -1,3 +1,13 @@
+main {
+    display: flex;
+    justify-content: space-between;
+}
+main a {
+    margin: 10px;
+}
+
+
+
 .change_settings_btn {
 
 position: relative;
@@ -17,6 +27,7 @@ cursor: pointer;
 .exit_btn {
 
 position: relative;
+justify-content: space-between;
 top: 10px;
 left: 1300px;
 display: inline-block;

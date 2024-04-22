@@ -7,31 +7,26 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <!--- link href="static/css/base_style.css" rel="stylesheet" --->
+    <link href="static/css/base_style.css" rel="stylesheet">
     <link href="static/css/header.css" rel="stylesheet">
     <link href="static/css/profile.css" rel="stylesheet">
+    <link href="static/css/welcome_style.css" rel="stylesheet">
     <title>{{title}}</title>
 </head>
 <body>
 <header>
-    <div>
-        <a class="btn btn-primary" href="/">Главная</a>
-    </div>
     {% if current_user.is_authenticated %}
-        <!---a class="navbar-brand" href="/logout">Выйти из аккаунта {{ current_user.name }}</a--->
+    <div>
+        <a class="btn btn-primary" id="exit" href="/logout">Выйти</a>
+    </div>
         <div>
             {% if not current_user.is_author %}
                 <a class="btn btn-primary" href="/becomecreator">Стать автором</a>
             {% else %}
                 <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
             {% endif %}
-            <a class="btn btn-primary" href="/logout">Выйти</a>
+            <a class="btn btn-primary" href="/">Главная</a>
             <a class="btn btn-primary" href="/settings_page">Настройки</a>
-        </div>
-    {% else %}
-        <div>
-            <a class="btn btn-primary" href="/login">Войти</a>
-            <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
         </div>
     {% endif %}
 </header>
