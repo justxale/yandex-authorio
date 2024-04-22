@@ -22,3 +22,8 @@ class BecomeAuthorForm(FlaskForm):
     display_name = StringField('Отображаемый ник', validators=[DataRequired()])
     about = TextAreaField('О себе', validators=[DataRequired()])
     submit = SubmitField('Стать автором!')
+
+
+class SearchForm(FlaskForm):
+    name = TextAreaField('Имя пользователя', validators=[DataRequired()])
+    submit = SubmitField('Искать')

@@ -7,7 +7,7 @@ from data.models.users import User, Role, Author
 from data import db_session, consts
 from forms.loginform import LoginForm
 from forms.posts import AddPostForm
-from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm
+from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm, SearchForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
@@ -51,6 +51,24 @@ def index():
     #    return render_template("posts_view.html", posts=new_posts)
     # return render_template("welcome_page.html", posts=new_posts)
     return render_template("posts_view.html", posts=new_posts)
+
+
+# @app.route('/news', methods=['GET', 'POST'])
+# @login_required
+# def add_news():
+#     form = NewsForm()
+#     if form.validate_on_submit():
+#         db_sess = db_session.create_session()
+#         news = News()
+#         news.title = form.title.data
+#         news.content = form.content.data
+#         news.is_private = form.is_private.data
+#         current_user.news.append(news)
+#         db_sess.merge(current_user)
+#         db_sess.commit()
+#         return redirect('/')
+#     return render_template('news.html', title='Добавление новости',
+#                            form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -132,6 +150,22 @@ def change_settings():
         db_sess.commit()
         return redirect('/settings_page')
     return render_template('change_settings.html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if request.method == 'POST':
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.name == form.name.data).first()
+        print(user.name)
+        db_sess.commit()
+        if user:
+            return redirect('/<string:username>')
+        else:
+            return render_template('search.html', form=form, error='Не найден!')
+    return render_template('search.html', form=form)
 
 
 @app.route('/<string:username>')
