@@ -162,11 +162,10 @@ def search():
         print(user.name)
         db_sess.commit()
         if user:
-            return redirect('/<string:username>')
+            return redirect(f"/{user.name}")
         else:
             return render_template('search.html', form=form, error='Не найден!')
     return render_template('search.html', form=form)
-
 
 @app.route('/<string:username>')
 def author_page(username: str):
