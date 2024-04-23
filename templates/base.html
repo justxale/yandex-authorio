@@ -19,15 +19,16 @@
     <div>
         <a class="btn btn-primary" id="exit" href="/logout">Выйти</a>
     </div>
-        <div>
-            {% if not current_user.is_author %}
-                <a class="btn btn-primary" href="/becomecreator">Стать автором</a>
-            {% else %}
-                <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
-            {% endif %}
-            <a class="btn btn-primary" href="/">Главная</a>
-            <a class="btn btn-primary" href="/settings_page">Настройки</a>
-        </div>
+    <div>
+        <a href="search" class="btn btn-secondary">Поиск пользователя</a>
+        {% if not current_user.is_author %}
+        <a class="btn btn-primary" href="/becomecreator">Стать автором</a>
+        {% else %}
+        <a class="btn btn-primary" href="/{{ current_user.name }}">Профиль</a>
+        {% endif %}
+        <a class="btn btn-primary" href="/">Главная</a>
+        <a class="btn btn-primary" href="/settings_page">Настройки</a>
+    </div>
     {% endif %}
 </header>
 <main role="main" class="container">

@@ -48,7 +48,7 @@ def index():
 
     if current_user.is_authenticated:
         return render_template("posts_view.html", posts=new_posts, title='Главная страница')
-    
+
     # И всё же мы хотим заинтересовать пользователей сайтом? Так почему бы не показывать им недавние посты?
     return render_template("welcome_page.html", posts=new_posts, title='Главная страница')
 
@@ -143,11 +143,13 @@ def change_settings():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == current_user.email).first()
 
+        print(user.name)
         user.name = form.name.data
         user.author.about = form.about.data
         user.author.display_name = form.display_name.data
 
         db_sess.commit()
+        print(user.name)
         return redirect('/settings_page')
     return render_template('change_settings.html', form=form)
 
@@ -159,18 +161,13 @@ def search():
     if request.method == 'POST':
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.name == form.name.data).first()
-        print(user)
+        # print(user.name)
+        db_sess.commit()
         if user:
-            print(user.name)
             return redirect(f"/{user.name}")
         else:
             return render_template('search.html', form=form, error='Не найден!')
     return render_template('search.html', form=form)
-
-
-@app.route('/money')
-def money():
-    pass
 
 
 @app.route('/<string:username>')
