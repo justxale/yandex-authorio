@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link href="static/css/settings_style.css" rel="stylesheet">
+</head>
+<body>
+<a class="exit_btn" href="/">Вернуться на главную</a>
+
+<p>
+    <img src = "{{ current_user.photo_path }}" width="150" height="150">
+</p>
+
+<form method="POST" enctype="multipart/form-data">
+        <input type="file" name="photo" accept="image/*">
+        <button type="submit">Upload</button>
+    </form>
+
+<h1>Имя: {{ current_user.name }}</h1>
+<h1>Email: {{current_user.email }}</h1>
+
+{% if current_user.is_author %}
+<h1>Текущий баланс: {{ current_user.author.display_name }}</h1>
+<h1>О себе: {{current_user.author.about }}</h1>
+{% endif %}
+
+<a class="change_settings_btn" href="/change_settings">Изменить</a>
+
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

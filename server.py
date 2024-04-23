@@ -159,13 +159,19 @@ def search():
     if request.method == 'POST':
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.name == form.name.data).first()
-        print(user.name)
-        db_sess.commit()
+        print(user)
         if user:
+            print(user.name)
             return redirect(f"/{user.name}")
         else:
             return render_template('search.html', form=form, error='Не найден!')
     return render_template('search.html', form=form)
+
+
+@app.route('/money')
+def money():
+    pass
+
 
 @app.route('/<string:username>')
 def author_page(username: str):

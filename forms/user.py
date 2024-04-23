@@ -27,3 +27,7 @@ class BecomeAuthorForm(FlaskForm):
 class SearchForm(FlaskForm):
     name = TextAreaField('Имя пользователя', validators=[DataRequired()])
     submit = SubmitField('Искать')
+
+
+class MoneyForm(FlaskForm):
+    pass
