@@ -1,11 +1,25 @@
 {% extends "search_base.html" %}
 
 {% block content %}
-<form action="/money" method="post">
+<form action="/transaction" method="post">
     <link href="static/css/settings_style.css" rel="stylesheet">
     <div>
 
     <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+    </p>
+        {% if error %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endif %}
+    {% for error in form.name.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+         <p>
         {{ form.summ.label }}<br>
         {{ form.summ(class="form-control") }}<br>
     </p>
