@@ -88,7 +88,8 @@ def register():
             name=form.name.data,
             email=form.email.data,
             photo_path='static/img/profile_img.png',
-            money=0
+            money=0,
+            score=0
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -97,7 +98,7 @@ def register():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/money', methods=['GET', 'POST'])
+@app.route('/add_on_balance', methods=['GET', 'POST'])
 def money():
     form = MoneyForm()
     if request.method == 'POST':
@@ -107,10 +108,10 @@ def money():
             user = db_sess.query(User).filter(User.email == current_user.email).first()
             user.score = user.score + int(form.summ.data)
             db_sess.commit()
-            return redirect("/")
+            return redirect("/settings_page")
         else:
-            return render_template('money.html', form=form, error='Вы ввели не число или оно не целое!')
-    return render_template('money.html', form=form)
+            return render_template('add_on_balance.html', form=form, error='Вы ввели не число или оно не целое!')
+    return render_template('add_on_balance.html', form=form)
 
 
 @app.route('/transaction', methods=['GET', 'POST'])
@@ -184,13 +185,13 @@ def change_settings():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == current_user.email).first()
 
-        print(user.name)
+        # print(user.name)
         user.name = form.name.data
         user.author.about = form.about.data
         user.author.display_name = form.display_name.data
 
         db_sess.commit()
-        print(user.name)
+        # print(user.name)
         return redirect('/settings_page')
     return render_template('change_settings.html', form=form)
 

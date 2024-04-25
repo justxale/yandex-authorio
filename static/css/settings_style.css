@@ -8,7 +8,7 @@ main a {
 
 
 
-.change_settings_btn {
+.sett_btn {
 
 position: relative;
 display: inline-block;
@@ -43,3 +43,18 @@ cursor: pointer;
 
 }
 
+.money_btn {
+
+position: relative;
+display: inline-block;
+padding: 12px 24px;
+font-size: 16px;
+font-weight: bold;
+text-decoration: none;
+background-color: #00FF00;
+color: white;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+
+}

@@ -1,0 +1,29 @@
+{% extends "settings_page.html" %}
+
+{% block content %}
+<div>
+<form action="/add_on_balance" method="post">
+    <link href="static/css/settings_style.css" rel="stylesheet">
+    <div>
+        <p>
+            {{ form.summ.label }}<br>
+            {{ form.summ(class="form-control") }}<br>
+        </p>
+            {% if error %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+            {% endif %}
+        {% for error in form.summ.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {{message}}
+        </div>
+        </form>
+    </div>
+
+{% endblock %}

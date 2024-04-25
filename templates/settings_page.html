@@ -19,13 +19,15 @@
 
 <h1>Имя: {{ current_user.name }}</h1>
 <h1>Email: {{current_user.email }}</h1>
+<h1>Текущий баланс: {{ current_user.score }}</h1>
 
 {% if current_user.is_author %}
 <h1>Отображаемый ник: {{ current_user.author.display_name }}</h1>
 <h1>О себе: {{current_user.author.about }}</h1>
 {% endif %}
 
-<a class="change_settings_btn" href="/change_settings">Изменить</a>
+<a class="sett_btn" href="/change_settings">Изменить</a>
+<a class="money_btn" href="/add_on_balance">Пополнить счёт</a>
 
 <main role="main" class="container">
     {% block content %}{% endblock %}
