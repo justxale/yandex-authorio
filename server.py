@@ -7,7 +7,7 @@ from data.models.users import User, Role, Author
 from data import db_session, consts
 from forms.loginform import LoginForm
 from forms.posts import AddPostForm
-from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm, SearchForm
+from forms.user import RegisterForm, ChangeSettingsForm, BecomeAuthorForm, SearchForm, MoneyForm, TransactionForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tkLhOynXewZuVQmJIpVJOUlhqNwVxHnI'
@@ -87,13 +87,54 @@ def register():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            photo_path='static/img/profile_img.png'
+            photo_path='static/img/profile_img.png',
+            money=0
         )
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/money', methods=['GET', 'POST'])
+def money():
+    form = MoneyForm()
+    if request.method == 'POST':
+        if form.summ.data.isdigit():
+            print(form.summ.data)
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.email == current_user.email).first()
+            user.score = user.score + int(form.summ.data)
+            db_sess.commit()
+            return redirect("/")
+        else:
+            return render_template('money.html', form=form, error='Вы ввели не число или оно не целое!')
+    return render_template('money.html', form=form)
+
+
+@app.route('/transaction', methods=['GET', 'POST'])
+def transaction():
+    form = TransactionForm()
+    if request.method == 'POST':
+        db_sess = db_session.create_session()
+        author = db_sess.query(User).filter(User.name == form.name.data).first()
+
+        if not author or not author.is_author:
+            return render_template('transaction.html', form=form,
+                                   error='Такого пользователя не существует или он не является автором!')
+        if form.summ.data.isdigit():
+            user = db_sess.query(User).filter(User.email == current_user.email).first()
+            if user.score - int(form.summ.data) > 0:
+                user.score = user.score - int(form.summ.data)
+                author.score += int(form.summ.data)
+                db_sess.commit()
+                return redirect("/")
+            else:
+                return render_template('transaction.html', form=form, error='У вас недостаточно средств на счету')
+        else:
+            return render_template('transaction.html', form=form, error='Вы ввели не число или оно не целое!')
+    return render_template('transaction.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -166,11 +207,6 @@ def search():
         else:
             return render_template('search.html', form=form, error='Не найден!')
     return render_template('search.html', form=form)
-
-
-@app.route('/money')
-def money():
-    pass
 
 
 @app.route('/<string:username>')

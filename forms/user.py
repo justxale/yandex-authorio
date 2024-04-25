@@ -30,4 +30,11 @@ class SearchForm(FlaskForm):
 
 
 class MoneyForm(FlaskForm):
-    pass
+    summ = TextAreaField('Укажите сумму', validators=[DataRequired()])
+    submit = SubmitField('Готово')
+
+
+class TransactionForm(FlaskForm):
+    name = TextAreaField('Укажите имя автора', validators=[DataRequired()])
+    summ = TextAreaField('Укажите сумму', validators=[DataRequired()])
+    submit = SubmitField('Готово')
