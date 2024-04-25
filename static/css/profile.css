@@ -9,6 +9,7 @@
 }
 
 .profileBio {
+    max-width: min(20vw, 450px);
     flex-grow: 0.5;
 
 }
