@@ -48,7 +48,7 @@ def index():
 
     if current_user.is_authenticated:
         return render_template("posts_view.html", posts=new_posts, title='Главная страница')
-    
+
     # И всё же мы хотим заинтересовать пользователей сайтом? Так почему бы не показывать им недавние посты?
     return render_template("welcome_page.html", posts=new_posts, title='Главная страница')
 
@@ -243,16 +243,29 @@ def main():
             name=role_name
         )
         session.add(role)
-    user = User(name=consts.AUTO_USER['name'])
-    user.set_password(consts.AUTO_USER['password'])
-    session.add(user)
-    author = Author(display_name=user.name, about='Boo!')
-    session.add(author)
+        try:
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(e)
 
-    try:
+    user = session.query(User).filter(User.name == consts.AUTO_USER.get('name')).first()
+    if not user:
+        user = User(
+            name=consts.AUTO_USER.get('name'), email=consts.AUTO_USER.get('email')
+        )
+        user.set_password(consts.AUTO_USER.get('password'))
+        session.add(user)
         session.commit()
-    except Exception:
-        pass
+        session.refresh(user)
+    if not user.is_author:
+        author = Author(
+            display_name=consts.AUTO_USER.get('display_name'), about=consts.AUTO_USER.get('about')
+        )
+        session.add(author)
+        session.commit()
+        user.author_id = author.id
+        session.commit()
 
 
 if __name__ == '__main__':
