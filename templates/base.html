@@ -20,6 +20,7 @@
         <a class="btn btn-primary" id="exit" href="/logout">Выйти</a>
     </div>
         <div>
+            <a href="search" class="btn btn-secondary">Поиск пользователя</a>
             {% if not current_user.is_author %}
                 <a class="btn btn-primary" href="/becomecreator">Стать автором</a>
             {% else %}

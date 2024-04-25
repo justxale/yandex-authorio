@@ -19,6 +19,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     author_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("authors.id"))
     photo_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     score = sqlalchemy.Column(sqlalchemy.Integer, index=True, unique=False, nullable=True)
+    money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
 
     author = orm.relationship("Author")
     role = orm.relationship('Role')
