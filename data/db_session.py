@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 SqlAlchemyBase = orm.declarative_base()
 
-__factory: None | orm.sessionmaker = None
+__factory = None
 
 
 def global_init(db_file):
