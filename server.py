@@ -106,6 +106,7 @@ def money():
             print(form.summ.data)
             db_sess = db_session.create_session()
             user = db_sess.query(User).filter(User.email == current_user.email).first()
+
             user.score = user.score + int(form.summ.data)
             db_sess.commit()
             return redirect("/settings_page")
@@ -291,7 +292,8 @@ def main():
     user = session.query(User).filter(User.name == consts.AUTO_USER.get('name')).first()
     if not user:
         user = User(
-            name=consts.AUTO_USER.get('name'), email=consts.AUTO_USER.get('email')
+            name=consts.AUTO_USER.get('name'), email=consts.AUTO_USER.get('email'), money=0, score=0,
+            photo_path='static/img/profile_img.png'
         )
         user.set_password(consts.AUTO_USER.get('password'))
         session.add(user)
